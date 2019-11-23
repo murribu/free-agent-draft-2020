@@ -11,23 +11,13 @@ input ModelIDFilterInput {
   beginsWith: ID
 }
 
-type User {
-  PK: String
-  SK: String
-  GSI1PK: String
-  GSI1SK: String
-  username: String
-  firstName: String
-  lastName: String
-  email: String
-  createdAt: String
-  updatedAt: String
-}
-
 type Player {
   PK: String
   SK: String
-  firstName: String
-  lastName: String
+  name: String
+  years: Number
+  amount: Number
   mlb: String
+  actualamount: Number
+  actualyears: Number
 }

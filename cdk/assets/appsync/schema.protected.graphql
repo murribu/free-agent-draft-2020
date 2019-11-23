@@ -11,3 +11,16 @@ schema {
   query: Query
   mutation: Mutation
 }
+
+type User {
+  PK: String
+  SK: String
+  GSI1PK: String
+  GSI1SK: String
+  username: String
+  firstName: String
+  lastName: String
+  email: String
+  createdAt: String
+  updatedAt: String
+}
