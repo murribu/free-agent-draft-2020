@@ -11,19 +11,7 @@ import {
   SignUp
 } from "aws-amplify-react";
 import TopNav from "../components/TopNav";
-
-const Home = () => (
-  <div
-    style={{
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      marginTop: "35vh"
-    }}
-  >
-    Home page!
-  </div>
-);
+import Home from "../components/Home";
 
 const MarginTopComponent = ({ render: C, props: childProps }) => (
   <div style={{ marginTop: "65px" }}>

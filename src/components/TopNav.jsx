@@ -116,7 +116,7 @@ class TopNav extends React.Component {
               </div>
             ) : (
               <Box mr={2}>
-                <Link to="/auth" underline="none">
+                <Link to="/auth">
                   <Button>Sign In</Button>
                 </Link>
               </Box>
