@@ -44,7 +44,7 @@ class TopNav extends React.Component {
   renderLinks() {
     const { classes } = this.props;
     const pathName = this.props.history.location.pathname;
-    const links = ["search", "licenses"];
+    const links = ["about"];
     return (
       <div className={classes.linksContainer}>
         {links.map(link => (

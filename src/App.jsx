@@ -120,7 +120,6 @@ class App extends Component {
       <ConnectedRouter history={this.props.history}>
         <div className={classes.root}>
           <main className={classes.content}>
-            <TopNav childProps={childProps} />
             <div className={classes.toolbar} />
             <Routes childProps={childProps} />
           </main>

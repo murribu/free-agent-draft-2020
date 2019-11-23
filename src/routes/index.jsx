@@ -21,33 +21,9 @@ const Home = () => (
       marginTop: "35vh"
     }}
   >
-    Integrity!
+    Home page!
   </div>
 );
-
-const SignInasdf = ({ render: C, props: childProps, ...rest }) => {
-  return (
-    <Authenticator
-      hideDefault={true}
-      onStateChange={childProps.onAuthStateChange}
-    >
-      <SignIn override="SignIn" />
-      <ConfirmSignIn />
-    </Authenticator>
-  );
-};
-
-const SignUpadf = ({ render: C, props: childProps, ...rest }) => {
-  return (
-    <Authenticator
-      hideDefault={true}
-      onStateChange={childProps.onAuthStateChange}
-    >
-      <SignUp override="SignUp" />
-      <ConfirmSignIn />
-    </Authenticator>
-  );
-};
 
 const MarginTopComponent = ({ render: C, props: childProps }) => (
   <div style={{ marginTop: "65px" }}>
@@ -136,6 +112,12 @@ const Routes = ({ childProps }) => {
   return (
     <Switch>
       <PublicRoute exact path="/" render={Home} props={childProps} />
+      <AuthRoute
+        exact
+        path="/auth"
+        props={childProps}
+        withAuthenticator={true}
+      />
     </Switch>
   );
 };
