@@ -1,0 +1,33 @@
+input ModelIDFilterInput {
+  ne: ID
+  eq: ID
+  le: ID
+  lt: ID
+  ge: ID
+  gt: ID
+  contains: ID
+  notContains: ID
+  between: [ID]
+  beginsWith: ID
+}
+
+type User {
+  PK: String
+  SK: String
+  GSI1PK: String
+  GSI1SK: String
+  username: String
+  firstName: String
+  lastName: String
+  email: String
+  createdAt: String
+  updatedAt: String
+}
+
+type Player {
+  PK: String
+  SK: String
+  firstName: String
+  lastName: String
+  mlb: String
+}

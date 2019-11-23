@@ -1,0 +1,13 @@
+type Mutation {
+  updateProfile(firstName: String, lastName: String): User
+}
+
+type Query {
+  getProfile: User
+  getPlayers: [Player]
+}
+
+schema {
+  query: Query
+  mutation: Mutation
+}

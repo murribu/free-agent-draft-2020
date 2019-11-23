@@ -5,6 +5,5 @@ src/config.js
 build/
 src/config.js
 src/config.ts
-cdkdeployresult_cognito.txt
-cdkdeployresult_appsync.txt
+cdkdeployresult.txt
 setAwsResourcesEnvVars.sh

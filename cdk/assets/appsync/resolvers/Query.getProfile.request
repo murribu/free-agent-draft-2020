@@ -1,0 +1,12 @@
+{
+  "version": "2017-02-28",
+  "operation": "Query",
+  "query": {
+    "expression": "PK = :PK and begins_with(SK, :SK)",
+    "expressionValues": {
+      ":PK": { "S": "user$ctx.identity.sub" },
+      ":SK": { "S": "user" }
+    }
+  },
+  "limit": 1
+}
