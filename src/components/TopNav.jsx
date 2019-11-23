@@ -1,15 +1,19 @@
 import React from "react";
 
 import AccountCircle from "@material-ui/icons/AccountCircle";
-import AppBar from "@material-ui/core/AppBar";
 import { Auth } from "aws-amplify";
-import Badge from "@material-ui/core/Badge";
-import IconButton from "@material-ui/core/IconButton";
 import { Link } from "react-router-dom";
-import MenuItem from "@material-ui/core/MenuItem";
-import Menu from "@material-ui/core/Menu";
+import {
+  Box,
+  AppBar,
+  Toolbar,
+  Menu,
+  MenuItem,
+  Button,
+  IconButton,
+  Badge
+} from "@material-ui/core";
 import PropTypes from "prop-types";
-import Toolbar from "@material-ui/core/Toolbar";
 import { withRouter } from "react-router-dom";
 import { withStyles } from "@material-ui/core/styles";
 
@@ -78,46 +82,46 @@ class TopNav extends React.Component {
             </Link>
             {this.renderLinks()}
           </div>
-          {authState === "signedIn" && (
-            <div className={classes.navBarRight}>
-              <Link to="/queue">
-                <div className={classes.queueContainer}>
-                  <span className={classes.queueText}>Queue</span>
-                  <IconButton color="inherit">
-                    <Badge badgeContent={4} color="primary" />
-                  </IconButton>
-                </div>
-              </Link>
-              {authData.username}
-              <IconButton
-                aria-owns={open ? "menu-appbar" : undefined}
-                aria-haspopup="true"
-                onClick={event => this.handleMenu(event)}
-                color="inherit"
-              >
-                <AccountCircle />
-              </IconButton>
-              <Menu
-                id="menu-appbar"
-                anchorEl={menuAnchorEl}
-                anchorOrigin={{
-                  vertical: "top",
-                  horizontal: "right"
-                }}
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "right"
-                }}
-                open={open}
-                onClose={event => this.handleClose(event)}
-              >
-                <MenuItem onClick={event => this.handleClose(event)}>
-                  <Link to="/profile">Profile</Link>
-                </MenuItem>
-                <MenuItem onClick={this.signOut}>Sign Out</MenuItem>
-              </Menu>
-            </div>
-          )}
+          <div className={classes.navBarRight}>
+            {authState === "signedIn" ? (
+              <div>
+                {authData.username}
+                <IconButton
+                  aria-owns={open ? "menu-appbar" : undefined}
+                  aria-haspopup="true"
+                  onClick={event => this.handleMenu(event)}
+                  color="inherit"
+                >
+                  <AccountCircle />
+                </IconButton>
+                <Menu
+                  id="menu-appbar"
+                  anchorEl={menuAnchorEl}
+                  anchorOrigin={{
+                    vertical: "top",
+                    horizontal: "right"
+                  }}
+                  transformOrigin={{
+                    vertical: "top",
+                    horizontal: "right"
+                  }}
+                  open={open}
+                  onClose={event => this.handleClose(event)}
+                >
+                  <MenuItem onClick={event => this.handleClose(event)}>
+                    <Link to="/profile">Profile</Link>
+                  </MenuItem>
+                  <MenuItem onClick={this.signOut}>Sign Out</MenuItem>
+                </Menu>
+              </div>
+            ) : (
+              <Box mr={2}>
+                <Link to="/auth" underline="none">
+                  <Button>Sign In</Button>
+                </Link>
+              </Box>
+            )}
+          </div>
         </Toolbar>
       </AppBar>
     );
