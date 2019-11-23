@@ -1,7 +1,4 @@
 import React from "react";
-import ProductView from "../components/search/ProductView";
-import Profile from "../resources/Profile";
-import Queue from "../components/queue/Queue";
 import { Route, Switch, Redirect } from "react-router";
 import {
   ConfirmSignIn,
@@ -28,7 +25,7 @@ const Home = () => (
   </div>
 );
 
-const SignIn = ({ render: C, props: childProps, ...rest }) => {
+const SignInasdf = ({ render: C, props: childProps, ...rest }) => {
   return (
     <Authenticator
       hideDefault={true}
@@ -40,7 +37,7 @@ const SignIn = ({ render: C, props: childProps, ...rest }) => {
   );
 };
 
-const SignUp = ({ render: C, props: childProps, ...rest }) => {
+const SignUpadf = ({ render: C, props: childProps, ...rest }) => {
   return (
     <Authenticator
       hideDefault={true}
@@ -109,7 +106,8 @@ const AuthRoute = ({ render: C, props: childProps, ...rest }) => {
           hideDefault={true}
           onStateChange={childProps.onAuthStateChange}
         >
-          <MySignIn override={rest.override} childProps={childProps} />
+          <SignIn />
+          <SignUp />
           <ConfirmSignIn />
         </Authenticator>
       );

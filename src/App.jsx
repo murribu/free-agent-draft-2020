@@ -64,8 +64,9 @@ class App extends Component {
     unauthorizedAlertOpen: false,
     drawerOpen: false,
     mobileDrawerOpen: false,
-    isLoggedIn: false,
-    profile: {}
+
+    authData: {},
+    authState: ""
   };
 
   constructor(props) {
@@ -82,11 +83,17 @@ class App extends Component {
   }
 
   async componentDidMount() {
-    // const { authData } = this.props;
-    // await this.authAWS(authData);
-    this.setState({
-      loading: false
-    });
+    try {
+      const user = await Auth.currentAuthenticatedUser();
+      this.setState({
+        authData: user,
+        authState: "signedIn"
+      });
+    } catch (e) {
+      console.log("error getting current user", e);
+    } finally {
+      this.setState({ loading: false });
+    }
   }
 
   async handleSignOut() {
@@ -104,7 +111,7 @@ class App extends Component {
     const { loading, unauthorizedAlertOpen } = this.state;
 
     const childProps = {
-      isLoggedIn: this.state.isLoggedIn,
+      state: this.state,
       onUserSignIn: this.handleSignIn,
       handleUserSignOut: this.handleSignOut
     };
