@@ -1,5 +1,6 @@
 node_modules/
 *.js
+!parseAwsOutputs.js
 src/config.js
 build/
 src/config.js

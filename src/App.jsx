@@ -13,10 +13,10 @@ import {
 import Amplify from "aws-amplify";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import Alert from "./components/Alert";
 import AWS from "aws-sdk";
 import { Auth } from "aws-amplify";
 import Routes from "./routes";
+import TopNav from "./components/TopNav";
 
 import { default as config } from "./config";
 
@@ -58,14 +58,14 @@ const customAuthComponents = [
 
 class App extends Component {
   groups = [];
-  Routes;
 
   state = {
     loading: true,
     unauthorizedAlertOpen: false,
     drawerOpen: false,
     mobileDrawerOpen: false,
-    isLoggedIn: false
+    isLoggedIn: false,
+    profile: {}
   };
 
   constructor(props) {
@@ -89,8 +89,14 @@ class App extends Component {
     });
   }
 
-  async signOut() {
-    await Auth.signOut();
+  async handleSignOut() {
+    try {
+      await Auth.signOut();
+      this.setState({ isLoggedIn: false });
+    } catch (e) {
+      console.log("error signing out");
+      console.error(e);
+    }
   }
 
   render() {
@@ -99,27 +105,15 @@ class App extends Component {
 
     const childProps = {
       isLoggedIn: this.state.isLoggedIn,
-      onUserSignIn: this.handleSignIn
+      onUserSignIn: this.handleSignIn,
+      handleUserSignOut: this.handleSignOut
     };
 
     return (
       <ConnectedRouter history={this.props.history}>
         <div className={classes.root}>
-          {loading && (
-            <div className={classes.loadingContainer}>
-              <div className={classes.loading}>
-                <CircularProgress />
-                <span className={classes.loadingTitle}>Authenticating...</span>
-              </div>
-              <Alert
-                open={unauthorizedAlertOpen}
-                title={<span>Error - Not Authorized</span>}
-                content="Your user account is not authorized to access this application. If this is a mistake, please contact support."
-                onDismiss={() => this.signOut()}
-              />
-            </div>
-          )}
           <main className={classes.content}>
+            <TopNav childProps={childProps} />
             <div className={classes.toolbar} />
             <Routes childProps={childProps} />
           </main>

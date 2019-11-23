@@ -4,9 +4,7 @@ This project's basis can be found [here](https://github.com/corydozen/serverless
 
 ## Deploy backend <a name="deploy-backend"></a>
 
-First, set up a local `~/.aws` profile called `fadev`.
-
-Second, make sure your cdk/config.ts file has some data. For this example, I'm using:
+Make sure your cdk/config.ts file has some data. For this example, I'm using:
 
 ```js
 export const config = {

@@ -1,57 +1,19 @@
 import React from "react";
-import { Route, Switch, Redirect } from "react-router-dom";
-import { Greetings, Authenticator } from "aws-amplify-react";
-
-const ProtectedRoute = ({ render: C, props: childProps, ...rest }) => (
-  <Route
-    {...rest}
-    render={rProps =>
-      childProps.isLoggedIn ? (
-        <C {...rProps} {...childProps} />
-      ) : (
-        <Redirect
-          to={`/auth?redirect=${rProps.location.pathname}${
-            rProps.location.search
-          }`}
-        />
-      )
-    }
-  />
-);
-
-const AuthRoute = ({ render: C, props: childProps, ...rest }) => {
-  return childProps.isLoggedIn ? (
-    <Route
-      path="/auth"
-      component={({ location }) => {
-        return (
-          <Redirect
-            to={{
-              pathname: `${
-                location.search.substring(1).split("=").length > 1
-                  ? location.search.substring(1).split("=")[1]
-                  : `/`
-              }`
-            }}
-          />
-        );
-      }}
-    />
-  ) : (
-    <Authenticator
-      onStateChange={childProps.onUserSignIn}
-      hide={[Greetings]}
-      usernameAttributes="email"
-      signUpConfig={{
-        hiddenDefaults: ["phone_number"]
-      }}
-    />
-  );
-};
-
-const ProppedRoute = ({ render: C, props: childProps, ...rest }) => (
-  <Route {...rest} render={rProps => <C {...rProps} {...childProps} />} />
-);
+import ProductView from "../components/search/ProductView";
+import Profile from "../resources/Profile";
+import Queue from "../components/queue/Queue";
+import { Route, Switch, Redirect } from "react-router";
+import {
+  ConfirmSignIn,
+  RequireNewPassword,
+  ForgotPassword,
+  TOTPSetup,
+  Loading,
+  Authenticator,
+  SignIn,
+  SignUp
+} from "aws-amplify-react";
+import TopNav from "../components/TopNav";
 
 const Home = () => (
   <div
@@ -62,32 +24,120 @@ const Home = () => (
       marginTop: "35vh"
     }}
   >
-    Free Agent Draft 2020
+    Integrity!
   </div>
 );
 
-const Secret = () => (
-  <div
-    style={{
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      marginTop: "35vh"
+const SignIn = ({ render: C, props: childProps, ...rest }) => {
+  return (
+    <Authenticator
+      hideDefault={true}
+      onStateChange={childProps.onAuthStateChange}
+    >
+      <SignIn override="SignIn" />
+      <ConfirmSignIn />
+    </Authenticator>
+  );
+};
+
+const SignUp = ({ render: C, props: childProps, ...rest }) => {
+  return (
+    <Authenticator
+      hideDefault={true}
+      onStateChange={childProps.onAuthStateChange}
+    >
+      <SignUp override="SignUp" />
+      <ConfirmSignIn />
+    </Authenticator>
+  );
+};
+
+const MarginTopComponent = ({ render: C, props: childProps }) => (
+  <div style={{ marginTop: "65px" }}>
+    <C {...childProps} />
+  </div>
+);
+
+const ProtectedRoute = ({ render: C, props: childProps, ...rest }) => (
+  <Route
+    {...rest}
+    component={rProps => {
+      console.log({ rProps, childProps });
+      return childProps.state.authState === "signedIn" ? (
+        <div>
+          <TopNav
+            authData={childProps.state.authData}
+            authState={childProps.state.authState}
+          />
+          <MarginTopComponent render={C} />
+        </div>
+      ) : (
+        <Redirect
+          to={`/auth/start?redirect=${rProps.location.pathname}${
+            rProps.location.search
+          }`}
+        />
+      );
     }}
-  >
-    Secret
-  </div>
+  />
 );
 
-const NoMatch = () => <h1>404</h1>;
+const AuthRoute = ({ render: C, props: childProps, ...rest }) => {
+  if (childProps.state.authState === "signedIn") {
+    return (
+      <Route
+        path="/auth"
+        component={({ location }) => {
+          return (
+            <Redirect
+              to={{
+                pathname: `${
+                  location.search.substring(1).split("=").length > 1
+                    ? location.search.substring(1).split("=")[1]
+                    : `/`
+                }`
+              }}
+            />
+          );
+        }}
+      />
+    );
+  } else {
+    if (rest.withAuthenticator) {
+      return (
+        <Authenticator
+          hideDefault={true}
+          onStateChange={childProps.onAuthStateChange}
+        >
+          <MySignIn override={rest.override} childProps={childProps} />
+          <ConfirmSignIn />
+        </Authenticator>
+      );
+    } else {
+      return <C childProps={childProps} {...rest} />;
+    }
+  }
+};
+
+const PublicRoute = ({ render: C, props: childProps, ...rest }) => (
+  <Route
+    {...rest}
+    component={rProps => (
+      <div>
+        <TopNav
+          authData={childProps.state.authData}
+          authState={childProps.state.authState}
+        />
+        <MarginTopComponent render={C} props={childProps} />
+      </div>
+    )}
+  />
+);
 
 const Routes = ({ childProps }) => {
   return (
     <Switch>
-      <ProppedRoute exact path="/" render={Home} props={childProps} />
-      <ProtectedRoute exact path="/secret" render={Secret} props={childProps} />
-      <AuthRoute exact path="/auth" props={childProps} />
-      <Route component={NoMatch} />
+      <PublicRoute exact path="/" render={Home} props={childProps} />
     </Switch>
   );
 };
