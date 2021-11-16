@@ -16,7 +16,7 @@
     "@types/react-router-dom": "^5.1.2",
     "aws-amplify": "^1.2.4",
     "aws-amplify-react": "^2.5.4",
-    "aws-sdk": "^2.569.0",
+    "aws-sdk": "^2.814.0",
     "connected-react-router": "^6.5.2",
     "history": "^4.10.1",
     "react": "^16.11.0",
